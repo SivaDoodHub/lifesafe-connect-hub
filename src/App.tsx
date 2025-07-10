@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Emergency from "./pages/Emergency";
 import Hospitals from "./pages/Hospitals";
 import Ambulance from "./pages/Ambulance";
+import LabTest from "./pages/LabTest";
 import BottomNavigation from "./components/BottomNavigation";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/emergency" element={<Emergency />} />
             <Route path="/hospitals" element={<Hospitals />} />
             <Route path="/ambulance" element={<Ambulance />} />
+            <Route path="/lab" element={<LabTest />} />
           </Routes>
           <BottomNavigation />
         </div>
