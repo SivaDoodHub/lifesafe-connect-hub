@@ -9,6 +9,10 @@ import Emergency from "./pages/Emergency";
 import Hospitals from "./pages/Hospitals";
 import Ambulance from "./pages/Ambulance";
 import LabTest from "./pages/LabTest";
+import LifeSafeTrack from "./pages/LifeSafeTrack";
+import VideoConsult from "./pages/VideoConsult";
+import Medicines from "./pages/Medicines";
+import HireManpower from "./pages/HireManpower";
 import BottomNavigation from "./components/BottomNavigation";
 
 const queryClient = new QueryClient();
@@ -26,6 +30,10 @@ const App = () => (
             <Route path="/hospitals" element={<Hospitals />} />
             <Route path="/ambulance" element={<Ambulance />} />
             <Route path="/lab" element={<LabTest />} />
+            <Route path="/track" element={<LifeSafeTrack />} />
+            <Route path="/consult" element={<VideoConsult />} />
+            <Route path="/medicines" element={<Medicines />} />
+            <Route path="/manpower" element={<HireManpower />} />
           </Routes>
           <BottomNavigation />
         </div>
