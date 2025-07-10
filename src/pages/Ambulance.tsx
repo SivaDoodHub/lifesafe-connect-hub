@@ -5,11 +5,23 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
+interface AmbulanceType {
+  id: number;
+  type: string;
+  name: string;
+  waitTime: string;
+  phone: string;
+  vehicles: string[];
+  fare: string;
+  availability: 'available' | 'busy';
+  features: string[];
+}
+
 const Ambulance = () => {
   const [currentLocation, setCurrentLocation] = useState("Detecting location...");
-  const [selectedAmbulance, setSelectedAmbulance] = useState(null);
+  const [selectedAmbulance, setSelectedAmbulance] = useState<AmbulanceType | null>(null);
 
-  const ambulanceTypes = [
+  const ambulanceTypes: AmbulanceType[] = [
     {
       id: 1,
       type: "BLS",
@@ -57,20 +69,26 @@ const Ambulance = () => {
   ];
 
   useEffect(() => {
-    // Simulate location detection
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setCurrentLocation("Anna Nagar, Chennai - 33KM Coverage Area");
     }, 2000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handleCall = (phone: string) => {
+    console.log(`Calling ${phone}`);
     window.location.href = `tel:${phone}`;
   };
 
-  const handleBookAmbulance = (ambulance: any) => {
+  const handleBookAmbulance = (ambulance: AmbulanceType) => {
     setSelectedAmbulance(ambulance);
     console.log(`Booking ${ambulance.name}`);
-    // In real app, this would open booking flow
+  };
+
+  const handleLocationChange = () => {
+    console.log("Changing location");
+    // In real app, this would open location picker
   };
 
   return (
@@ -83,17 +101,22 @@ const Ambulance = () => {
         <Card className="mb-4">
           <CardContent className="p-4">
             <div className="flex items-start space-x-3">
-              <MapPin className="h-5 w-5 text-red-600 mt-1" />
-              <div className="flex-1">
+              <MapPin className="h-5 w-5 text-red-600 mt-1 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
                 <h3 className="font-medium text-gray-900 mb-1">Current Location</h3>
-                <p className="text-sm text-gray-600">{currentLocation}</p>
+                <p className="text-sm text-gray-600 break-words">{currentLocation}</p>
                 {currentLocation.includes("33KM") && (
-                  <Badge className="mt-2 bg-green-100 text-green-800">
+                  <Badge className="mt-2 bg-green-100 text-green-800 border-green-200">
                     Coverage Available
                   </Badge>
                 )}
               </div>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleLocationChange}
+                className="flex-shrink-0"
+              >
                 <Navigation className="h-4 w-4 mr-1" />
                 Change
               </Button>
@@ -130,19 +153,19 @@ const Ambulance = () => {
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-red-100 p-3 rounded-full">
+                  <div className="flex items-start space-x-4 flex-1">
+                    <div className="bg-red-100 p-3 rounded-full flex-shrink-0">
                       <Truck className="h-6 w-6 text-red-600" />
                     </div>
-                    <div>
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-1">
                         <h3 className="font-semibold text-lg text-gray-900">{ambulance.type}</h3>
-                        <div className={`w-3 h-3 rounded-full ${
+                        <div className={`w-3 h-3 rounded-full flex-shrink-0 ${
                           ambulance.availability === 'available' ? 'bg-green-500' : 'bg-red-500'
                         }`}></div>
                       </div>
                       <p className="text-gray-600 mb-2">{ambulance.name}</p>
-                      <div className="flex items-center space-x-4 text-sm">
+                      <div className="flex items-center space-x-4 text-sm flex-wrap gap-2">
                         <div className="flex items-center text-gray-600">
                           <Clock className="h-4 w-4 mr-1" />
                           <span>{ambulance.waitTime}</span>
@@ -154,7 +177,7 @@ const Ambulance = () => {
                   
                   <Badge 
                     variant={ambulance.availability === 'available' ? 'default' : 'destructive'}
-                    className={ambulance.availability === 'available' ? 'bg-green-600' : ''}
+                    className={`flex-shrink-0 ${ambulance.availability === 'available' ? 'bg-green-600' : ''}`}
                   >
                     {ambulance.availability === 'available' ? 'Available' : 'Busy'}
                   </Badge>
@@ -178,7 +201,7 @@ const Ambulance = () => {
                   <ul className="text-sm text-gray-600 space-y-1">
                     {ambulance.features.map((feature, index) => (
                       <li key={index} className="flex items-center">
-                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></div>
+                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2 flex-shrink-0"></div>
                         {feature}
                       </li>
                     ))}
@@ -223,7 +246,7 @@ const Ambulance = () => {
         <Card className="bg-blue-50 border-blue-200">
           <CardContent className="p-4">
             <div className="flex items-start space-x-3">
-              <Zap className="h-5 w-5 text-blue-600 mt-0.5" />
+              <Zap className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
               <div>
                 <h3 className="font-medium text-blue-900 mb-1">Quick Tips</h3>
                 <ul className="text-sm text-blue-800 space-y-1">
